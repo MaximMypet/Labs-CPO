@@ -14,6 +14,14 @@ struct TreeElement
 		left = NULL;
 	}
 };
+struct spis {
+	int value;
+	spis* pointer;
+	spis() {
+		value = 0;
+		pointer = NULL;
+	}
+};
 
 void Input(TreeElement*& el, int v)
 {
@@ -39,6 +47,35 @@ void Output(TreeElement* el)
 		cout << el->value << " ";
 		Output(el->right);
 	}
+}
+void Spisok(spis*& head, TreeElement* el, spis*& p)
+{
+    if (el != NULL)
+    {
+        Spisok(head, el->left, p);
+        spis* p1 = new spis;
+        p1->value = el->value;
+        if (p == NULL)
+        {
+            head = p1;
+            p = p1;
+        }
+        else
+        {
+            p->pointer = p1;
+            p = p1;
+        }
+        Spisok(head, el->right, p);
+    }
+}
+
+void Out(spis* l) {
+    cout << "Spisok: ";
+    while (l != NULL) {
+        cout << l->value << " ";
+        l = l->pointer;
+    }
+    cout << endl;
 }
 void Detach(TreeElement * root, TreeElement * el)
 	{
@@ -81,6 +118,8 @@ void Detach(TreeElement * root, TreeElement * el)
 		};
 	}
 int main() {
+	        spis* first = NULL;
+	        spis* two = NULL;
 			TreeElement* root = NULL;
 			int x, y;
 			cout << "Vvedite kol-vo elementov dereva:  ";
@@ -92,6 +131,9 @@ int main() {
 			}
 			Output(root);
 			cout << endl;
+			Spisok(first, root, two);
+			Out(first);
+
 			int b;
 			cout << "Vvedite element, kotorui xotite udalit':  ";
 			cin >> b;
